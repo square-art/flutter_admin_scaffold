@@ -20,10 +20,12 @@ class AdminScaffold extends StatefulWidget {
   final Color? backgroundColor;
 
   @override
-  _AdminScaffoldState createState() => _AdminScaffoldState();
+  _AdminScaffoldState createState() =>
+      _AdminScaffoldState();
 }
 
-class _AdminScaffoldState extends State<AdminScaffold>
+class _AdminScaffoldState
+    extends State<AdminScaffold>
     with SingleTickerProviderStateMixin {
   static const _mobileThreshold = 768.0;
 
@@ -38,7 +40,8 @@ class _AdminScaffoldState extends State<AdminScaffold>
   @override
   void initState() {
     super.initState();
-    _appBar = _buildAppBar(widget.appBar, widget.sideBar);
+    _appBar = _buildAppBar(
+        widget.appBar, widget.sideBar);
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 300),
@@ -58,9 +61,11 @@ class _AdminScaffoldState extends State<AdminScaffold>
     }
 
     setState(() {
-      _isMobile = mediaQuery.size.width < _mobileThreshold;
+      _isMobile = mediaQuery.size.width <
+          _mobileThreshold;
       _isOpenSidebar = !_isMobile;
-      _animationController.value = _isMobile ? 0 : 1;
+      _animationController.value =
+          _isMobile ? 0 : 1;
       _screenWidth = mediaQuery.size.width;
     });
   }
@@ -82,20 +87,26 @@ class _AdminScaffoldState extends State<AdminScaffold>
   }
 
   void _onDragStart(DragStartDetails details) {
-    final isClosed = _animationController.isDismissed;
-    final isOpen = _animationController.isCompleted;
-    _canDragged = (isClosed && details.globalPosition.dx < 60) || isOpen;
+    final isClosed =
+        _animationController.isDismissed;
+    final isOpen =
+        _animationController.isCompleted;
+    _canDragged = (isClosed &&
+            details.globalPosition.dx < 60) ||
+        isOpen;
   }
 
   void _onDragUpdate(DragUpdateDetails details) {
     if (_canDragged) {
       final delta =
-          (details.primaryDelta ?? 0.0) / (widget.sideBar?.width ?? 1.0);
+          (details.primaryDelta ?? 0.0) /
+              (widget.sideBar?.width ?? 1.0);
       _animationController.value += delta;
     }
   }
 
-  void _dragCloseDrawer(DragUpdateDetails details) {
+  void _dragCloseDrawer(
+      DragUpdateDetails details) {
     final delta = details.primaryDelta ?? 0.0;
     if (delta < 0) {
       _isOpenSidebar = false;
@@ -106,11 +117,15 @@ class _AdminScaffoldState extends State<AdminScaffold>
   void _onDragEnd(DragEndDetails details) async {
     final minFlingVelocity = 365.0;
 
-    if (details.velocity.pixelsPerSecond.dx.abs() >= minFlingVelocity) {
+    if (details.velocity.pixelsPerSecond.dx
+            .abs() >=
+        minFlingVelocity) {
       final visualVelocity =
-          details.velocity.pixelsPerSecond.dx / (widget.sideBar?.width ?? 1.0);
+          details.velocity.pixelsPerSecond.dx /
+              (widget.sideBar?.width ?? 1.0);
 
-      await _animationController.fling(velocity: visualVelocity);
+      await _animationController.fling(
+          velocity: visualVelocity);
       if (_animationController.isCompleted) {
         setState(() {
           _isOpenSidebar = true;
@@ -147,7 +162,8 @@ class _AdminScaffoldState extends State<AdminScaffold>
                 children: [
                   Expanded(
                     child: Align(
-                      alignment: Alignment.topCenter,
+                      alignment:
+                          Alignment.topCenter,
                       child: widget.body,
                     ),
                   ),
@@ -157,25 +173,36 @@ class _AdminScaffoldState extends State<AdminScaffold>
                 ? Stack(
                     children: [
                       GestureDetector(
-                        onHorizontalDragStart: _onDragStart,
-                        onHorizontalDragUpdate: _onDragUpdate,
-                        onHorizontalDragEnd: _onDragEnd,
+                        onHorizontalDragStart:
+                            _onDragStart,
+                        onHorizontalDragUpdate:
+                            _onDragUpdate,
+                        onHorizontalDragEnd:
+                            _onDragEnd,
                       ),
                       widget.body,
                       if (_animation.value > 0)
                         Container(
                           color: Colors.black
-                              .withAlpha((150 * _animation.value).toInt()),
+                              .withAlpha((150 *
+                                      _animation
+                                          .value)
+                                  .toInt()),
                         ),
                       if (_animation.value == 1)
                         GestureDetector(
                           onTap: _toggleSidebar,
-                          onHorizontalDragUpdate: _dragCloseDrawer,
+                          onHorizontalDragUpdate:
+                              _dragCloseDrawer,
                         ),
                       ClipRect(
                         child: SizedOverflowBox(
                           size: Size(
-                              (widget.sideBar?.width ?? 1.0) * _animation.value,
+                              (widget.sideBar
+                                          ?.width ??
+                                      1.0) *
+                                  _animation
+                                      .value,
                               double.infinity),
                           child: widget.sideBar,
                         ),
@@ -186,18 +213,25 @@ class _AdminScaffoldState extends State<AdminScaffold>
                     children: [
                       widget.sideBar != null
                           ? ClipRect(
-                              child: SizedOverflowBox(
+                              child:
+                                  SizedOverflowBox(
                                 size: Size(
-                                    (widget.sideBar?.width ?? 1.0) *
-                                        _animation.value,
-                                    double.infinity),
-                                child: widget.sideBar,
+                                    (widget.sideBar
+                                                ?.width ??
+                                            1.0) *
+                                        _animation
+                                            .value,
+                                    double
+                                        .infinity),
+                                child: widget
+                                    .sideBar,
                               ),
                             )
                           : SizedBox(),
                       Expanded(
                         child: Align(
-                          alignment: Alignment.topCenter,
+                          alignment:
+                              Alignment.topCenter,
                           child: widget.body,
                         ),
                       ),
@@ -207,22 +241,25 @@ class _AdminScaffoldState extends State<AdminScaffold>
     );
   }
 
-  AppBar? _buildAppBar(AppBar? appBar, SideBar? sideBar) {
+  AppBar? _buildAppBar(
+      AppBar? appBar, SideBar? sideBar) {
     if (appBar == null) {
       return null;
     }
 
-    final leading = sideBar != null
-        ? IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: _toggleSidebar,
-          )
-        : appBar.leading;
+    // final leading = sideBar != null
+    //     ? IconButton(
+    //         icon: const Icon(Icons.menu),
+    //         onPressed: _toggleSidebar,
+    //       )
+    //     : appBar.leading;
+    final leading = SizedBox();
     final shadowColor = Colors.transparent;
 
     return AppBar(
       leading: leading,
-      automaticallyImplyLeading: appBar.automaticallyImplyLeading,
+      automaticallyImplyLeading:
+          appBar.automaticallyImplyLeading,
       title: appBar.title,
       actions: appBar.actions,
       flexibleSpace: appBar.flexibleSpace,
@@ -238,16 +275,19 @@ class _AdminScaffoldState extends State<AdminScaffold>
       textTheme: appBar.textTheme,
       primary: appBar.primary,
       centerTitle: appBar.centerTitle ?? false,
-      excludeHeaderSemantics: appBar.excludeHeaderSemantics,
+      excludeHeaderSemantics:
+          appBar.excludeHeaderSemantics,
       titleSpacing: appBar.titleSpacing,
       toolbarOpacity: appBar.toolbarOpacity,
       bottomOpacity: appBar.bottomOpacity,
       toolbarHeight: appBar.toolbarHeight,
       leadingWidth: appBar.leadingWidth,
-      backwardsCompatibility: appBar.backwardsCompatibility,
+      backwardsCompatibility:
+          appBar.backwardsCompatibility,
       toolbarTextStyle: appBar.toolbarTextStyle,
       titleTextStyle: appBar.titleTextStyle,
-      systemOverlayStyle: appBar.systemOverlayStyle,
+      systemOverlayStyle:
+          appBar.systemOverlayStyle,
     );
   }
 }
