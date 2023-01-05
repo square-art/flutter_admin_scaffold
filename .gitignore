@@ -1,0 +1,12 @@
+.DS_Store
+.dart_tool/
+
+.packages
+.pub/
+
+build/
+
+.idea/workspace.xml
+
+# fvm related
+.fvm/flutter_sdk
